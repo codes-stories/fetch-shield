@@ -1,0 +1,62 @@
+{
+  "name": "@codessy/fetch-shield",
+  "version": "0.1.0",
+  "description": "Retry transient HTTP failures with exponential backoff, jitter, per-attempt timeouts, Retry-After support, and cancellation on top of the native Fetch API.",
+  "keywords": [
+    "fetch",
+    "retry",
+    "backoff",
+    "exponential-backoff",
+    "timeout",
+    "abort",
+    "retry-after",
+    "http",
+    "typescript"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.build.esm.json && tsc -p tsconfig.build.cjs.json && node scripts/finalize-build.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "lint": "biome check src test examples scripts",
+    "lint:fix": "biome check --write src test examples scripts",
+    "test": "node --test \"test/**/*.test.ts\"",
+    "pretest": "npm run build",
+    "validate": "npm run typecheck && npm run lint && npm test",
+    "prepublishOnly": "npm run validate"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.15",
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}
